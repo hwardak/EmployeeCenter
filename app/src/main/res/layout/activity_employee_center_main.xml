@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="hwardak.employeecenter.EmployeeCenterMainActivity"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Employee Center"
+        android:textSize="@dimen/large"
+        android:paddingBottom="25sp"
+        />
+
+
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            >
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/medium"
+                android:text="View Employees"
+                android:id="@+id/button_view_employees"
+                android:onClick="viewEmployeesButtonOnClick"
+                />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/medium"
+                android:text="Add Employee"
+                android:id="@+id/button_add_employees"
+                android:onClick="addEmployeesButtonOnClick"
+
+                />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/medium"
+                android:text="Settings"
+                android:id="@+id/button_settings"
+                android:onClick="settingsButtonOnClick"
+
+                />
+
+
+
+
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
+
