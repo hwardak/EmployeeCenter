@@ -18,6 +18,8 @@ import javax.mail.internet.InternetAddress;
 
 public class AddEmployeeActivity extends AppCompatActivity {
 
+    DBDataAccess dbDataAccess;
+
 
     private EditText editText_first_name;
     private EditText editText_last_name;
@@ -35,11 +37,16 @@ public class AddEmployeeActivity extends AppCompatActivity {
     private Button button_save;
 
     ArrayList<EditText> list_edittexts;
+    ArrayList<String> list_edittexts_values;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_employee);
+
+        dbDataAccess = new DBDataAccess(this);
 
         instantiateViews();
         populateEditTextListView();
@@ -84,16 +91,34 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
     public void addEmployeeSaveButtonOnClick(View view) {
 
-        if(doFormFieldsHaveEntries()){
-            if(isDateValid()){
-                if(isEmailValid()){
-                    //Save employee to db
-
+        if(doFormFieldsHaveEntries()) {
+            if(isIdValid()) {
+                if(isDateValid()) {
+                    if(isEmailValid()) {
+                        saveEmployee();
+                    }
                 }
             }
         }
     }
 
+    private boolean isIdValid() {
+        boolean pass = true;
+
+
+        return pass;
+    }
+
+    private void saveEmployee() {
+
+        for(int i = 0; i < list_edittexts.size(); i++) {
+
+            list_edittexts_values.add(list_edittexts.get(i).getText().toString());
+        }
+
+
+        dbDataAccess.addEmployeeToTable(list_edittexts_values);
+    }
 
 
     private boolean isEmailValid() {

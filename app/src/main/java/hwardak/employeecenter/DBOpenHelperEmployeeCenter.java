@@ -24,27 +24,27 @@ public class DBOpenHelperEmployeeCenter extends SQLiteOpenHelper {
     /**
      * Table and column names.
      */
-    private static final String TABLE_EMPLOYEES = "employeesTable";
-    private static final String EMPLOYEES_COLUMN_ID = "_id";
-    private static final String EMPLOYEES_COLUMN_FIRST_NAME = "firstName";
-    private static final String EMPLOYEES_COLUMN_MIDDLE_NAME = "middleName";
-    private static final String EMPLOYEES_COLUMN_LAST_NAME = "lastName";
-    private static final String EMPLOYEES_COLUMN_DATE_OF_BIRTH = "dateOfBirth";
-    private static final String EMPLOYEES_COLUMN_SIN = "sin";
-    private static final String EMPLOYEES_COLUMN_EMAIL = "email";
-    private static final String EMPLOYEES_COLUMN_PHONE_NUMBER = "phoneNumber";
-    private static final String EMPLOYEES_COLUMN_STREET_ADDRESS = "streetAddress";
-    private static final String EMPLOYEES_COLUMN_CITY = "city";
-    private static final String EMPLOYEES_COLUMN_PROVINCE = "province";
-    private static final String EMPLOYEES_COLUMN_POSTAL_CODE = "postalCode";
-    private static final String EMPLOYEES_COLUMN_STARTING_DATE = "startingDate";
+    static final String TABLE_EMPLOYEES = "employeesTable";
+    static final String EMPLOYEES_COLUMN_ID = "_id";
+    static final String EMPLOYEES_COLUMN_FIRST_NAME = "firstName";
+    static final String EMPLOYEES_COLUMN_MIDDLE_NAME = "middleName";
+    static final String EMPLOYEES_COLUMN_LAST_NAME = "lastName";
+    static final String EMPLOYEES_COLUMN_DATE_OF_BIRTH = "dateOfBirth";
+    static final String EMPLOYEES_COLUMN_SIN = "sin";
+    static final String EMPLOYEES_COLUMN_EMAIL = "email";
+    static final String EMPLOYEES_COLUMN_PHONE_NUMBER = "phoneNumber";
+    static final String EMPLOYEES_COLUMN_STREET_ADDRESS = "streetAddress";
+    static final String EMPLOYEES_COLUMN_CITY = "city";
+    static final String EMPLOYEES_COLUMN_PROVINCE = "province";
+    static final String EMPLOYEES_COLUMN_POSTAL_CODE = "postalCode";
+    static final String EMPLOYEES_COLUMN_STARTING_DATE = "startingDate";
 
 
     private static final String CREATE_EMPLOYEES_TABLE
             = "CREATE TABLE "
             + TABLE_EMPLOYEES
             + " ("
-            +  EMPLOYEES_COLUMN_ID + " INTEGER PRIMARY KEY, "
+            + EMPLOYEES_COLUMN_ID + " INTEGER PRIMARY KEY, "
             + EMPLOYEES_COLUMN_FIRST_NAME + " TEXT, "
             + EMPLOYEES_COLUMN_MIDDLE_NAME + " TEXT, "
             + EMPLOYEES_COLUMN_LAST_NAME + " TEXT, "
