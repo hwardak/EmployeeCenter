@@ -63,6 +63,8 @@
                     android:layout_weight="1"
                     android:id="@+id/edittext_first_name"
                     android:inputType="textPersonName"
+
+                    android:text="TEST"
                     />
 
             </LinearLayout>
@@ -90,6 +92,10 @@
                     android:id="@+id/edittext_middle_name"
                     android:inputType="textPersonName"
 
+                    android:text="TEST"
+
+
+
                     />
             </LinearLayout>
 
@@ -115,6 +121,8 @@
                     android:layout_weight="1"
                     android:id="@+id/edittext_last_name"
                     android:inputType="textPersonName"
+
+                    android:text="TEST"
 
                     />
 
@@ -143,6 +151,10 @@
                     android:id="@+id/edittext_date_of_birth"
                     android:inputType="date"
                     android:hint="dd/mm/yyyy"
+
+
+
+                    android:text="11/11/1111"
                     />
 
             </LinearLayout>
@@ -169,6 +181,8 @@
                     android:layout_weight="1"
                     android:id="@+id/edittext_sin_number"
                     android:inputType="number"
+
+                    android:text="TEST"
                     />
 
             </LinearLayout>
@@ -195,6 +209,10 @@
                     android:layout_weight="1"
                     android:id="@+id/edittext_email"
                     android:inputType="textEmailAddress"
+
+
+
+                    android:text="TEST@HOTMAIL.COM"
                     />
 
             </LinearLayout>
@@ -221,6 +239,8 @@
                     android:layout_weight="1"
                     android:id="@+id/edittext_phone_number"
                     android:inputType="number"
+
+                    android:text="TEST"
                     />
 
             </LinearLayout>
@@ -246,6 +266,8 @@
                     android:layout_weight="1"
                     android:id="@+id/edittext_street_address"
                     android:inputType="textPersonName"
+
+                    android:text="TEST"
                     />
 
             </LinearLayout>
@@ -273,6 +295,8 @@
                     android:id="@+id/edittext_city"
                     android:inputType="textPersonName"
 
+                    android:text="TEST"
+
                     />
 
             </LinearLayout>
@@ -299,6 +323,8 @@
                     android:layout_weight="1"
                     android:id="@+id/edittext_province"
                     android:inputType="textPersonName"
+
+                    android:text="TEST"
 
                     />
 
@@ -330,6 +356,8 @@
                     android:inputType="textPersonName"
                     android:maxLength="6"
 
+                    android:text="TEST"
+
                     />
 
 
@@ -359,6 +387,8 @@
                     android:id="@+id/edittext_starting_date"
                     android:inputType="date"
                     android:hint="dd/mm/yyyy"
+
+                    android:text="11/11/1111"
                     />
 
             </LinearLayout>

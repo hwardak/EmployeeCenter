@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -20,7 +21,7 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
     DBDataAccess dbDataAccess;
 
-
+    private EditText editText_id;
     private EditText editText_first_name;
     private EditText editText_last_name;
     private EditText editText_middle_name;
@@ -55,6 +56,7 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
 
     private void instantiateViews() {
+        editText_id = (EditText) findViewById(R.id.edittext_id);
         editText_first_name = (EditText) findViewById(R.id.edittext_first_name);
         editText_last_name = (EditText) findViewById(R.id.edittext_last_name);
         editText_middle_name = (EditText) findViewById(R.id.edittext_middle_name);
@@ -75,7 +77,9 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
     private void populateEditTextListView() {
         list_edittexts = new ArrayList<>();
+        list_edittexts_values = new ArrayList<>();
 
+        list_edittexts.add(editText_id);
         list_edittexts.add(editText_first_name);
         list_edittexts.add(editText_last_name);
         list_edittexts.add(editText_middle_name);
@@ -96,6 +100,10 @@ public class AddEmployeeActivity extends AppCompatActivity {
                 if(isDateValid()) {
                     if(isEmailValid()) {
                         saveEmployee();
+                        Toast.makeText(this, "Employee Saved Successfully", Toast.LENGTH_LONG).show();
+                        this.onBackPressed();
+
+
                     }
                 }
             }
@@ -105,20 +113,26 @@ public class AddEmployeeActivity extends AppCompatActivity {
     private boolean isIdValid() {
         boolean pass = true;
 
+        if(dbDataAccess.doesIdExist(editText_id.getText().toString().trim())){
+            pass = false;
+            editText_id.setError("ID is taken, choose another...");
+        }
 
         return pass;
     }
 
     private void saveEmployee() {
 
+        //Collect values from all EditText fields, and add them to String ArrayList.
         for(int i = 0; i < list_edittexts.size(); i++) {
-
             list_edittexts_values.add(list_edittexts.get(i).getText().toString());
         }
 
 
         dbDataAccess.addEmployeeToTable(list_edittexts_values);
+        list_edittexts_values.clear();
     }
+
 
 
     private boolean isEmailValid() {
