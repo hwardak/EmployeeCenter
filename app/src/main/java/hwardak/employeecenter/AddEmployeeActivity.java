@@ -1,14 +1,19 @@
 package hwardak.employeecenter;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,6 +25,7 @@ import javax.mail.internet.InternetAddress;
 public class AddEmployeeActivity extends AppCompatActivity {
 
     DBDataAccess dbDataAccess;
+     int REQUEST_IMAGE_CAPTURE;
 
     private EditText editText_id;
     private EditText editText_first_name;
@@ -34,6 +40,8 @@ public class AddEmployeeActivity extends AppCompatActivity {
     private EditText editText_province;
     private EditText editText_postal_code;
     private EditText editText_starting_date;
+
+    private ImageView photoImage;
 
     private Button button_save;
 
@@ -51,6 +59,12 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
         instantiateViews();
         populateEditTextListView();
+
+
+
+
+
+
     }
 
 
@@ -72,6 +86,8 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
         button_save = (Button) findViewById(R.id.button_save);
 
+        photoImage = (ImageView) findViewById(R.id.photoImage);
+
 
     }
 
@@ -81,9 +97,10 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
         list_edittexts.add(editText_id);
         list_edittexts.add(editText_first_name);
-        list_edittexts.add(editText_last_name);
         list_edittexts.add(editText_middle_name);
+        list_edittexts.add(editText_last_name);
         list_edittexts.add(editText_date_of_birth);
+        list_edittexts.add(editText_sin_number);
         list_edittexts.add(editText_email);
         list_edittexts.add(editText_phone_number);
         list_edittexts.add(editText_street_address);
@@ -183,4 +200,25 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
         return pass;
     }
+
+    public void takePhotoButtonOnClick(View view) {
+        REQUEST_IMAGE_CAPTURE = 1;
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        takePictureIntent.putExtra("android.intent.extras.CAMERA_FACING", 1);
+
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            photoImage.setImageBitmap(imageBitmap);
+        }
+    }
+
+
 }

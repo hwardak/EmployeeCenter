@@ -39,7 +39,7 @@ public class DBDataAccess {
     };
 
 
-    public DBDataAccess(Context context){
+    public DBDataAccess(Context context) {
         dbHelper = new DBOpenHelperEmployeeCenter(context);
     }
 
@@ -60,11 +60,11 @@ public class DBDataAccess {
         dbHelper.close();
     }
 
-    public boolean doesIdExist(String employeeId){
+    public boolean doesIdExist(String employeeId) {
         this.open();
         Cursor cursor =
                 database.rawQuery("SELECT 1 FROM " + DBOpenHelperEmployeeCenter.TABLE_EMPLOYEES
-                        + " WHERE _id= \"" +  Integer.valueOf(employeeId) + "\" LIMIT 1", null);
+                        + " WHERE _id= \"" + Integer.valueOf(employeeId) + "\" LIMIT 1", null);
 
 
         Log.d(LOGTAG, "Returned " + cursor.getCount() + " rows");
@@ -80,13 +80,13 @@ public class DBDataAccess {
     }
 
 
-    public boolean addEmployeeToTable(ArrayList<String> string){
+    public boolean addEmployeeToTable(ArrayList<String> string) {
        /*
     Order in which values are stored in ArrayList:
-        0   id
+        0   employeeId
         1   first_name
-        3   last_name
-        4   middle_name
+        3   middle_name
+        4   last_name
         5   date_of_birth
         6   sin_number
         7   email
@@ -99,7 +99,7 @@ public class DBDataAccess {
      */
         this.open();
         ContentValues values = new ContentValues();
-        for(int i = 0; i < string.size(); i++){
+        for (int i = 0; i < string.size(); i++) {
             values.put(ALL_EMPLOYEE_TABLE_COLUMNS[i], string.get(i));
         }
         database.insert(DBOpenHelperEmployeeCenter.TABLE_EMPLOYEES, null, values);
@@ -108,4 +108,89 @@ public class DBDataAccess {
         return true;
     }
 
+    public ArrayList<String> getEmployeeList() {
+        this.open();
+        ArrayList<String> employeeList = new ArrayList<>();
+        String employeeRow = "";
+
+        Cursor cursor
+                = database.rawQuery("Select * from "
+                + DBOpenHelperEmployeeCenter.TABLE_EMPLOYEES
+                + ";", null);
+
+        if (cursor.getCount() > 0) {
+            for (int i = 0; i < cursor.getCount(); i++) {
+                cursor.moveToNext();
+                employeeRow = "";
+
+                employeeRow += i + 1 + ") ";
+                employeeRow += cursor.getString(cursor.getColumnIndex(DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_FIRST_NAME));
+                employeeRow += " ";
+                employeeRow += cursor.getString(cursor.getColumnIndex(DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_LAST_NAME));
+
+                employeeRow += "\t\t";
+                employeeRow += cursor.getString(cursor.getColumnIndex(DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_ID));
+
+
+                employeeList.add(employeeRow);
+
+            }
+
+        }
+        this.close();
+        return employeeList;
+    }
+
+
+    public Cursor getEmployeeListCursor() {
+        this.open();
+        Cursor cursor
+                = database.rawQuery("Select * from "
+                + DBOpenHelperEmployeeCenter.TABLE_EMPLOYEES
+                + ";", null);
+
+//        this.close();
+        return cursor;
+    }
+
+    public ArrayList<String> getEmployeeDetails(int id) {
+
+        this.open();
+        ArrayList<String> employeeDetails = new ArrayList<>();
+
+        Cursor cursor
+                = database.rawQuery("SELECT * from "
+                + DBOpenHelperEmployeeCenter.TABLE_EMPLOYEES
+                + " WHERE "
+                + DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_ID
+                + " = "
+                + id
+                + ";", null);
+
+        cursor.moveToNext();
+
+        employeeDetails.add(cursor.getString(cursor.getColumnIndex(DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_FIRST_NAME)));
+        employeeDetails.add(cursor.getString(cursor.getColumnIndex(DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_MIDDLE_NAME)));
+        employeeDetails.add(cursor.getString(cursor.getColumnIndex(DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_LAST_NAME)));
+        employeeDetails.add(cursor.getString(cursor.getColumnIndex(DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_DATE_OF_BIRTH)));
+        employeeDetails.add(cursor.getString(cursor.getColumnIndex(DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_SIN)));
+        employeeDetails.add(cursor.getString(cursor.getColumnIndex(DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_EMAIL)));
+        employeeDetails.add(cursor.getString(cursor.getColumnIndex(DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_PHONE_NUMBER)));
+        employeeDetails.add(cursor.getString(cursor.getColumnIndex(DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_STREET_ADDRESS)));
+        employeeDetails.add(cursor.getString(cursor.getColumnIndex(DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_CITY)));
+        employeeDetails.add(cursor.getString(cursor.getColumnIndex(DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_PROVINCE)));
+        employeeDetails.add(cursor.getString(cursor.getColumnIndex(DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_POSTAL_CODE)));
+        employeeDetails.add(cursor.getString(cursor.getColumnIndex(DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_STARTING_DATE)));
+
+
+        this.close();
+        return employeeDetails;
+
+    }
+
+
 }
+
+//    public ArrayList<ArrayList<String>> getAllEmployeeData(){
+//
+//    }

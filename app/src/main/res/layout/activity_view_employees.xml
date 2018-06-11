@@ -1,26 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="hwardak.employeecenter.ViewEmployees">
+    android:orientation="vertical"
+    tools:context="hwardak.employeecenter.ViewEmployeesActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Employees"
+        android:textSize="@dimen/medium"
+        />
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="ID"
+        android:textSize="@dimen/medium"
+        />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="3"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:textSize="@dimen/medium"
+        />
 
 
 
+</LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="9"
+        android:fillViewport="true"
+        >
 
 
 
         <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-
-
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/listview_employees"
+            >
 
         </ListView>
 
@@ -28,4 +62,20 @@
 
     </ScrollView>
 
-</android.support.constraint.ConstraintLayout>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:text="View Details "
+        android:textSize="@dimen/medium"
+        android:id="@+id/button_view_details"
+        android:enabled="false"
+        android:layout_gravity="center_horizontal"
+        android:onClick="viewEmployeeDetailsButtonOnClick"
+        />
+
+
+
+</LinearLayout>

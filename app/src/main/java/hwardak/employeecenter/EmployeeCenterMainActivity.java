@@ -35,6 +35,8 @@ public class EmployeeCenterMainActivity extends AppCompatActivity {
     }
 
     public void viewEmployeesButtonOnClick(View view) {
+        Intent intent = new Intent(this, ViewEmployeesActivity.class);
+        startActivity(intent);
     }
 
     public void addEmployeesButtonOnClick(View view) {
