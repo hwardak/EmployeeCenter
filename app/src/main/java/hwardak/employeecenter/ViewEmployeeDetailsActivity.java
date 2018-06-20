@@ -31,7 +31,7 @@ public class ViewEmployeeDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_employee);
+        setContentView(R.layout.activity_employee_form);
         dbDataAccess = new DBDataAccess(this);
 
         employeeId = getIntent().getIntExtra("employeeId", 111);
