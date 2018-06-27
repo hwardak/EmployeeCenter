@@ -1,6 +1,7 @@
 package hwardak.employeecenter;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -8,6 +9,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,12 +46,20 @@ public class AddEmployeeActivity extends AppCompatActivity {
     private EditText editText_postal_code;
     private EditText editText_starting_date;
 
-    private ImageView photoImage;
+    private ImageView imageView_photo;
 
+    private Button button_take_photo;
     private Button button_save;
 
     ArrayList<EditText> list_edittexts;
     ArrayList<String> list_edittexts_values;
+
+    /*
+     * Stores the absolute path of the user's picture.
+      * TO BE: stored internally and private.
+      * Will be saved to DB and recalled when needed, both full-size and thumbnail.
+     */
+    String imagePath;
 
 
 
@@ -60,16 +70,25 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
         dbDataAccess = new DBDataAccess(this);
 
+//        String formType = getIntent().getStringExtra("formType");
+
+//        enableFormTypeSpecificViews(formType);
         instantiateViews();
         populateEditTextListView();
 
 
 
-
-
-
     }
 
+    private void enableFormTypeSpecificViews(String formType) {
+        if(formType.equals("add")){
+
+        } else {
+            button_take_photo.setVisibility(View.GONE);
+
+        }
+
+    }
 
 
     private void instantiateViews() {
@@ -87,9 +106,10 @@ public class AddEmployeeActivity extends AppCompatActivity {
         editText_postal_code = (EditText) findViewById(R.id.edittext_postal_code);
         editText_starting_date = (EditText) findViewById(R.id.edittext_starting_date);
 
+        button_take_photo = (Button) findViewById(R.id.button_take_photo);
         button_save = (Button) findViewById(R.id.button_save);
 
-        photoImage = (ImageView) findViewById(R.id.photoImage);
+        imageView_photo = (ImageView) findViewById(R.id.photoImage);
 
 
     }
@@ -148,6 +168,9 @@ public class AddEmployeeActivity extends AppCompatActivity {
             list_edittexts_values.add(list_edittexts.get(i).getText().toString());
         }
 
+        //Save the absolute path for the profile picture taken.
+        list_edittexts_values.add(imagePath);
+
 
         dbDataAccess.addEmployeeToTable(list_edittexts_values);
         list_edittexts_values.clear();
@@ -204,25 +227,35 @@ public class AddEmployeeActivity extends AppCompatActivity {
         return pass;
     }
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
 
-    static final int REQUEST_TAKE_PHOTO = 1;
 
+
+    /**
+     * When 'Take Photo' button is pressed.
+     * @param view
+     */
     public void takePhotoButtonOnClick(View view) {
         dispatchTakePictureIntent();
     }
 
+
+    static final int REQUEST_TAKE_PHOTO = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
+
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
+        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
+
             File photoFile = null;
             try {
                 photoFile = createImageFile();
+                Log.d("LOGTAG", " PHOTOFILE CREATED");
+                Log.d("LOGTAG", photoFile.getAbsolutePath());
             } catch (IOException ex) {
-                // Error occurred while creating the File
-
+                Log.d("LOGTAG", " PHOTOFILE NOT CREATED");
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
@@ -230,22 +263,19 @@ public class AddEmployeeActivity extends AppCompatActivity {
                         "hwardak.employeecenter.FileProvider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
         }
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-//            Bundle extras = data.getExtras();
-//            Bitmap imageBitmap = (Bitmap) extras.get("data");
-//            mImageView.setImageBitmap(imageBitmap);
-//        }
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            imageView_photo.setImageBitmap(imageBitmap);
+        }
+    }
 
-
-    String mCurrentPhotoPath;
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -258,7 +288,9 @@ public class AddEmployeeActivity extends AppCompatActivity {
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
+        imagePath = image.getAbsolutePath();
+        Log.d("LOGTAG ", imagePath);
+
         return image;
     }
 

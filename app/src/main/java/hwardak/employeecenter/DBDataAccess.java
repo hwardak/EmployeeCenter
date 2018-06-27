@@ -34,7 +34,8 @@ public class DBDataAccess {
             DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_CITY,
             DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_PROVINCE,
             DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_POSTAL_CODE,
-            DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_STARTING_DATE
+            DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_STARTING_DATE,
+            DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_PICTURE_PATH
 
     };
 
@@ -96,6 +97,7 @@ public class DBDataAccess {
         11  province
         12  postal_code
         13  starting_date
+        14  profile_picture_path
      */
         this.open();
         ContentValues values = new ContentValues();
@@ -181,12 +183,18 @@ public class DBDataAccess {
         employeeDetails.add(cursor.getString(cursor.getColumnIndex(DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_PROVINCE)));
         employeeDetails.add(cursor.getString(cursor.getColumnIndex(DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_POSTAL_CODE)));
         employeeDetails.add(cursor.getString(cursor.getColumnIndex(DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_STARTING_DATE)));
+        employeeDetails.add(cursor.getString(cursor.getColumnIndex(DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_PICTURE_PATH)));
+
+        Log.d("PATH", "XX " +employeeDetails.get(12));
 
 
         this.close();
         return employeeDetails;
 
     }
+
+    //06-25 03:10:27.014 11348-11348/hwardak.employeecenter D/Photofile path: /storage/emulated/0/Android/data/hwardak.employeecenter/files/Pictures/8888_photo_1750710344.jpg
+
 
 
 }

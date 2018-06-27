@@ -1,8 +1,11 @@
 package hwardak.employeecenter;
 
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
@@ -25,6 +28,7 @@ public class ViewEmployeeDetailsActivity extends AppCompatActivity {
     private EditText editText_postal_code;
     private EditText editText_starting_date;
     private ArrayList<EditText> list_editTexts;
+    private  ImageView photoImage;
 
     int employeeId;
 
@@ -49,9 +53,14 @@ public class ViewEmployeeDetailsActivity extends AppCompatActivity {
 
     private void loadEmployeeDetails(ArrayList<String> employeeDetails) {
 
-        for(int i = 0; i< employeeDetails.size(); i++){
+        //      NEED TO REMOVE THE -1, WAS THERE TO CHECK THE PIC PATH
+        for(int i = 0; i< employeeDetails.size() - 1; i++){
             list_editTexts.get(i).setText(employeeDetails.get(i));
         }
+        Log.d("PicturePath: " , employeeDetails.get(employeeDetails.size()-1));
+        Log.d("PictureBitMap", String.valueOf(BitmapFactory.decodeFile(employeeDetails.get(employeeDetails.size()-1))));
+        photoImage.setImageBitmap(BitmapFactory.decodeFile(employeeDetails.get(employeeDetails.size()-1)));
+
 
     }
 
@@ -69,6 +78,9 @@ public class ViewEmployeeDetailsActivity extends AppCompatActivity {
         editText_province = (EditText) findViewById(R.id.edittext_province);
         editText_postal_code = (EditText) findViewById(R.id.edittext_postal_code);
         editText_starting_date = (EditText) findViewById(R.id.edittext_starting_date);
+
+        photoImage = (ImageView) findViewById(R.id.photoImage);
+
 
     }
 

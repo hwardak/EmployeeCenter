@@ -22,9 +22,6 @@ public class EmployeeCenterMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_employee_center_main);
 
         this.instantiateButtons();
-
-
-
     }
 
     private void instantiateButtons() {
@@ -36,11 +33,13 @@ public class EmployeeCenterMainActivity extends AppCompatActivity {
 
     public void viewEmployeesButtonOnClick(View view) {
         Intent intent = new Intent(this, ViewEmployeesActivity.class);
+        intent.putExtra("formType", "view");
         startActivity(intent);
     }
 
     public void addEmployeesButtonOnClick(View view) {
         Intent intent = new Intent(this, AddEmployeeActivity.class);
+        intent.putExtra("formType", "add");
         startActivity(intent);
     }
 

@@ -14,7 +14,7 @@ public class DBOpenHelperEmployeeCenter extends SQLiteOpenHelper {
 
     private static final String LOGTAG = "DATABASE: ";
     private static final String DATABASE_NAME ="employeeCenter.db";
-    private static int DATABASE_VERSION = 1;
+    private static int DATABASE_VERSION = 2;
 
     public DBOpenHelperEmployeeCenter(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -38,6 +38,7 @@ public class DBOpenHelperEmployeeCenter extends SQLiteOpenHelper {
     static final String EMPLOYEES_COLUMN_PROVINCE = "province";
     static final String EMPLOYEES_COLUMN_POSTAL_CODE = "postalCode";
     static final String EMPLOYEES_COLUMN_STARTING_DATE = "startingDate";
+    static final String EMPLOYEES_COLUMN_PICTURE_PATH = "profilePicturePath";
 
 
     private static final String CREATE_EMPLOYEES_TABLE
@@ -56,7 +57,8 @@ public class DBOpenHelperEmployeeCenter extends SQLiteOpenHelper {
             + EMPLOYEES_COLUMN_CITY + " TEXT, "
             + EMPLOYEES_COLUMN_PROVINCE + " TEXT, "
             + EMPLOYEES_COLUMN_POSTAL_CODE + " TEXT, "
-            + EMPLOYEES_COLUMN_STARTING_DATE + " TEXT"
+            + EMPLOYEES_COLUMN_STARTING_DATE + " TEXT,"
+            + EMPLOYEES_COLUMN_PICTURE_PATH + " TEXT "
             + ");";
 
 
@@ -71,8 +73,7 @@ public class DBOpenHelperEmployeeCenter extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IS EXISTS " + TABLE_EMPLOYEES);
-
+        db.execSQL("DROP TABLE If EXISTS " + TABLE_EMPLOYEES);
         this.onCreate(db);
 
     }

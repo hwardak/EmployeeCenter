@@ -393,32 +393,36 @@
 
             </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Profile photo:"
-                android:textSize="@dimen/medium"
-                />
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Profile photo:"
+                    android:textSize="@dimen/medium"
+                    />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Take Photo"
-                android:textSize="@dimen/medium"
-                android:onClick="takePhotoButtonOnClick"
-                />
-        </LinearLayout>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Take Photo"
+                    android:textSize="@dimen/medium"
+                    android:onClick="takePhotoButtonOnClick"
+                    android:id="@+id/button_take_photo"
+                    />
+            </LinearLayout>
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/photoImage"/>
+                android:id="@+id/photoImage"
+                android:layout_gravity="center_horizontal"
+                android:src="@mipmap/empty_profile"
+                />
 
             <Button
                 android:layout_gravity="center_horizontal"
