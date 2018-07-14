@@ -14,7 +14,7 @@ public class DBOpenHelperEmployeeCenter extends SQLiteOpenHelper {
 
     private static final String LOGTAG = "DATABASE: ";
     private static final String DATABASE_NAME ="employeeCenter.db";
-    private static int DATABASE_VERSION = 2;
+    private static int DATABASE_VERSION = 3;
 
     public DBOpenHelperEmployeeCenter(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

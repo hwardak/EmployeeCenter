@@ -27,6 +27,14 @@
                 android:resource="@xml/file_paths">
 
 
+                <!-- The Content Provider is declared -->
+                <provider
+                    android:name=".ContactProvider"
+                    android:authorities="hwardak.employeecenter"
+                    android:exported="true"
+                    android:multiprocess="true" >
+                </provider>
+
             </meta-data>
         </provider>
 

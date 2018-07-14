@@ -37,7 +37,6 @@ public class ViewEmployeesActivity extends AppCompatActivity {
         viewEmployeeDetailsButton = (Button) findViewById(R.id.button_view_details);
 
 
-
         this.updateListView();
         this.instantiateListViewClickListener();
 
@@ -45,6 +44,8 @@ public class ViewEmployeesActivity extends AppCompatActivity {
 
 
     }
+
+
 
     /**
      * On click listener on the ListView of employees. If an item in the ListView is clicked, it is
@@ -80,21 +81,21 @@ public class ViewEmployeesActivity extends AppCompatActivity {
     }
 
     private void updateListView() {
-        employeeList = dbDataAccess.getEmployeeList();
+//      employeeList = dbDataAccess.getEmployeeList();
 
         Cursor cursor = dbDataAccess.getEmployeeListCursor();
 
         String[] columns = {
                 DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_ID,
                 DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_FIRST_NAME,
-                DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_LAST_NAME
+                DBOpenHelperEmployeeCenter.EMPLOYEES_COLUMN_LAST_NAME,
         };
 
 
         int[] resourceIds = {
                 R.id.listview_row_employee_id,
                 R.id.listview_row_employee_first_name,
-                R.id.listview_row_employee_last_name
+                R.id.listview_row_employee_last_name,
         };
 
 

@@ -1,12 +1,20 @@
 package hwardak.employeecenter;
 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 
@@ -38,14 +46,35 @@ public class ViewEmployeeDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_employee_form);
         dbDataAccess = new DBDataAccess(this);
 
+
         employeeId = getIntent().getIntExtra("employeeId", 111);
 
         instantiateViews();
         populateEditTextList();
+        dbDataAccess.open();
         loadEmployeeDetails(dbDataAccess.getEmployeeDetails(employeeId));
-
-
+        dbDataAccess.close();
         editText_id.setText(String.valueOf(employeeId));
+
+        prepareFormViewOnly();
+        getWindow().setSoftInputMode(
+
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+
+        );
+
+    }
+    /*
+       * activity_employee_form is modified here to fit the privileges of this Activity.
+       *
+       * All editTexts are disabled.
+       */
+    private void prepareFormViewOnly() {
+        editText_id.setEnabled(false);
+
+        for(int i = 0; i < list_editTexts.size(); i++){
+            list_editTexts.get(i).setEnabled(false);
+        }
 
 
 
@@ -54,12 +83,31 @@ public class ViewEmployeeDetailsActivity extends AppCompatActivity {
     private void loadEmployeeDetails(ArrayList<String> employeeDetails) {
 
         //      NEED TO REMOVE THE -1, WAS THERE TO CHECK THE PIC PATH
-        for(int i = 0; i< employeeDetails.size() - 1; i++){
+        for(int i = 0; i< employeeDetails.size()-1; i++){
             list_editTexts.get(i).setText(employeeDetails.get(i));
         }
-        Log.d("PicturePath: " , employeeDetails.get(employeeDetails.size()-1));
+        String path = employeeDetails.get(employeeDetails.size()-1);
+        Log.d("PicturePath: " , path);
+        Log.d("fileList",fileList().length+"");
+
+        //load saved image
+        try {
+            FileInputStream fis = openFileInput(employeeId+"_photo_.jpeg");
+            photoImage.setImageBitmap(BitmapFactory.decodeStream(fis));
+            //Log.d("bitmapHeight", myBitmap.getHeight()+"");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
+
         Log.d("PictureBitMap", String.valueOf(BitmapFactory.decodeFile(employeeDetails.get(employeeDetails.size()-1))));
-        photoImage.setImageBitmap(BitmapFactory.decodeFile(employeeDetails.get(employeeDetails.size()-1)));
+        //photoImage.setImageBitmap(BitmapFactory.decodeFile(employeeDetails.get(employeeDetails.size()-1)));
+
+        //photoImage.getLayoutParams();
+        //ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) photoImage.getLayoutParams();
+        //params. = Gravity.CENTER;
+        //image.setLayoutParams(params);
 
 
     }
@@ -80,6 +128,21 @@ public class ViewEmployeeDetailsActivity extends AppCompatActivity {
         editText_starting_date = (EditText) findViewById(R.id.edittext_starting_date);
 
         photoImage = (ImageView) findViewById(R.id.photoImage);
+        //photoImage.setMinimumHeight(1000);
+        photoImage.setScaleType(ImageView.ScaleType.FIT_XY);
+        // check if photo exists and load it into imageView
+        /*if(dbDataAccess.doesIdExist(employeeId+"")){
+            ArrayList<String> details = dbDataAccess.getEmployeeDetails(employeeId);
+            File imgFile = new File(details.get(details.size()-1));
+
+            if(imgFile.exists()){
+
+                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+                photoImage.setImageBitmap(myBitmap);
+
+            }
+        }*/
 
 
     }

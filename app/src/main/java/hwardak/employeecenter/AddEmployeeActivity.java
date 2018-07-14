@@ -1,7 +1,9 @@
 package hwardak.employeecenter;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -17,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -56,11 +60,11 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
     /*
      * Stores the absolute path of the user's picture.
-      * TO BE: stored internally and private.
-      * Will be saved to DB and recalled when needed, both full-size and thumbnail.
+     * TO BE: stored internally and private.
+     * Will be saved to DB and recalled when needed, both full-size and thumbnail.
      */
     String imagePath;
-
+    private Uri photoURI;
 
 
     @Override
@@ -70,25 +74,27 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
         dbDataAccess = new DBDataAccess(this);
 
-//        String formType = getIntent().getStringExtra("formType");
 
-//        enableFormTypeSpecificViews(formType);
         instantiateViews();
         populateEditTextListView();
 
 
+        prepareFormAddVersion();
 
     }
 
-    private void enableFormTypeSpecificViews(String formType) {
-        if(formType.equals("add")){
-
-        } else {
-            button_take_photo.setVisibility(View.GONE);
-
-        }
-
+    /*
+     * activity_employee_form is modified here to fit the privileges this activity.
+     *
+     * button_save, and button_take_photo have their VISIBILITY  set to GONE by default. They are
+     * set to VISIBLE here.
+     */
+    private void prepareFormAddVersion() {
+        button_save.setVisibility(View.VISIBLE);
+        button_take_photo.setVisibility(View.VISIBLE);
     }
+
+
 
 
     private void instantiateViews() {
@@ -135,10 +141,10 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
     public void addEmployeeSaveButtonOnClick(View view) {
 
-        if(doFormFieldsHaveEntries()) {
-            if(isIdValid()) {
-                if(isDateValid()) {
-                    if(isEmailValid()) {
+        if (doFormFieldsHaveEntries()) {
+            if (isIdValid()) {
+                if (isDateValid()) {
+                    if (isEmailValid()) {
                         saveEmployee();
                         Toast.makeText(this, "Employee Saved Successfully", Toast.LENGTH_LONG).show();
                         this.onBackPressed();
@@ -153,7 +159,7 @@ public class AddEmployeeActivity extends AppCompatActivity {
     private boolean isIdValid() {
         boolean pass = true;
 
-        if(dbDataAccess.doesIdExist(editText_id.getText().toString().trim())){
+        if (dbDataAccess.doesIdExist(editText_id.getText().toString().trim())) {
             pass = false;
             editText_id.setError("ID is taken, choose another...");
         }
@@ -164,7 +170,7 @@ public class AddEmployeeActivity extends AppCompatActivity {
     private void saveEmployee() {
 
         //Collect values from all EditText fields, and add them to String ArrayList.
-        for(int i = 0; i < list_edittexts.size(); i++) {
+        for (int i = 0; i < list_edittexts.size(); i++) {
             list_edittexts_values.add(list_edittexts.get(i).getText().toString());
         }
 
@@ -175,7 +181,6 @@ public class AddEmployeeActivity extends AppCompatActivity {
         dbDataAccess.addEmployeeToTable(list_edittexts_values);
         list_edittexts_values.clear();
     }
-
 
 
     private boolean isEmailValid() {
@@ -216,7 +221,7 @@ public class AddEmployeeActivity extends AppCompatActivity {
     private boolean doFormFieldsHaveEntries() {
         boolean pass = true;
 
-        for(int i = 0; i < list_edittexts.size(); i++) {
+        for (int i = 0; i < list_edittexts.size(); i++) {
             if (TextUtils.isEmpty(list_edittexts.get(i).getText().toString().trim())) {
                 list_edittexts.get(i).setError("Entry Needed");
                 pass = false;
@@ -228,10 +233,9 @@ public class AddEmployeeActivity extends AppCompatActivity {
     }
 
 
-
-
     /**
      * When 'Take Photo' button is pressed.
+     *
      * @param view
      */
     public void takePhotoButtonOnClick(View view) {
@@ -245,7 +249,6 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
 
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 
@@ -259,10 +262,12 @@ public class AddEmployeeActivity extends AppCompatActivity {
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
+                photoURI = FileProvider.getUriForFile(this,
                         "hwardak.employeecenter.FileProvider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+
             }
         }
     }
@@ -270,9 +275,46 @@ public class AddEmployeeActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imageView_photo.setImageBitmap(imageBitmap);
+            //Bundle extras = data.getExtras();
+            //Bitmap imageBitmap = (Bitmap) extras.get("data");
+            //Log.d("widthBitmap", imageBitmap.getWidth() + "");
+            //imageView_photo.setImageBitmap(imageBitmap);
+
+            //super.onActivityResult(requestCode,resultCode, data);
+            //this.getContentResolver().notifyChange(photoURI, null);
+            Bitmap myBitmap = null;
+            try {
+                myBitmap = android.provider.MediaStore.Images.Media.getBitmap(getContentResolver(), photoURI);
+                //create thumbnail
+                Bitmap thumbnail = Bitmap.createScaledBitmap(myBitmap, myBitmap.getHeight()/6, myBitmap.getHeight()/6,false);
+                Log.d("mybitmap", myBitmap.getHeight() + "");
+                imageView_photo.setImageBitmap(thumbnail);
+                //imageView_photo.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+
+                // save the image to internal system
+                if(myBitmap != null) {
+                    try {
+                        String name = editText_id.getText().toString().trim() + "_photo_.jpeg";
+                        FileOutputStream fos = openFileOutput(name, MODE_PRIVATE);
+                        //imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                        myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                        ///////comment in if you want the internal ( not cached ) absolute path to profile pic
+                        //imagePath = getFileStreamPath(name).getAbsolutePath();
+                        if (fos != null)
+                            fos.close();
+                        Log.d("bitmapHeight", myBitmap.getHeight()+"");
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+            } catch (Exception e) {
+                Log.d("failedToLoad", "Failed to load", e);
+            }
         }
     }
 
@@ -280,14 +322,16 @@ public class AddEmployeeActivity extends AppCompatActivity {
     private File createImageFile() throws IOException {
         // Create an image file name
         String imageFileName = editText_id.getText().toString().trim() + "_photo_";
+        Log.d("imageFileName", imageFileName);
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
+                ".jpeg",         /* suffix */
                 storageDir      /* directory */
         );
 
         // Save a file: path for use with ACTION_VIEW intents
+        //NOTE THIS IS A TEMPORARY PATH to the Cached file
         imagePath = image.getAbsolutePath();
         Log.d("LOGTAG ", imagePath);
 
